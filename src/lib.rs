@@ -61,24 +61,20 @@ impl Config {
 }
 
 fn search_sensitive<'a>(word: &str, contents: &'a str) -> Vec<&'a str> {
-    let mut result = Vec::new();
-    for line in contents.lines() {
-        if line.contains(word) {
-            result.push(line.trim());
-        } 
-    }
-    result
+    contents
+        .lines()
+        .filter(|x| x.contains(word))
+        .map(|x| x.trim())
+        .collect()
 }
 
 fn search_insensitive<'a>(word: &str, contents: &'a str) -> Vec<&'a str> {
-    let mut result = Vec::new();
     let word = word.to_lowercase();
-    for line in contents.lines() {
-        if line.to_lowercase().contains(&word) {
-            result.push(line.trim());
-        } 
-    }
-    result
+    contents
+        .lines()
+        .filter(|x| x.to_lowercase().contains(&word))
+        .map(|x| x.trim())
+        .collect()
 }
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
